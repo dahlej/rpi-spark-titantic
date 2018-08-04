@@ -1,0 +1,19 @@
+$ cd ~/spark-2.3.0-bin-hadoop2.7
+$ bin/spark-submit --master \
+    k8s://test-cluster.eastus2.cloudapp.azure.com:443 \
+    --deploy-mode cluster \
+    --name copyLocations \
+    --class io.timpark.CopyData \
+--conf spark.kubernetes.authenticate.driver.serviceAccountName=spark \
+    --conf spark.copydata.containerpath=wasb://CONTAINERS@STORAGE_ACCOUNT.blob.core.windows.net \
+    --conf spark.copydata.storageaccount=STORAGE_ACCOUNT \
+    --conf spark.copydata.storageaccountkey=STORAGE_ACCOUNT_KEY \
+    --conf spark.copydata.frompath=wasb://CONTAINER1@STORAGE_ACCOUNT.blob.core.windows.net/PATH1 \
+    --conf spark.copydata.topath=wasb://CONTAINER2@locationdata.blob.core.windows.net/PATH2 \
+    --conf spark.executor.instances=16 \
+    --conf spark.kubernetes.container.image=timfpark/copy-data:latest \
+    --jars http://central.maven.org/maven2/org/apache/hadoop/hadoop-azure/2.7.2/hadoop-azure-2.7.2.jar,http://central.maven.org/maven2/com/microsoft/azure/azure-storage/3.1.0/azure-storage-3.1.0.jar,http://central.maven.org/maven2/com/databricks/spark-avro_2.11/4.0.0/spark-avro_2.11-4.0.0.jar \
+    local:///opt/spark/jars/copy-data_2.11-0.1.0-SNAPSHOT.jar
+
+
+    /Users/dahle/clockworkideas/titantic/target/scala-2.11/titantic_2.11-0.1.jar
